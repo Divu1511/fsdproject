@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login/Register</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <h1>Login Form</h1>
+
+  <div id="loginContainer">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Username" autocomplete="off" required>
+      <input type="password" id="password" placeholder="Password" autocomplete="off" required>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <script>
+  document.getElementById('loginForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+    console.log(username);
+    console.log(password);
+  
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+
+  fetch('http://localhost:3000/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Authentication failed');
+        }
+        return response.json();
+      })
+      .then(data => {
+        alert('Login successful');
+        // if(localStorage.getItem('token') || localStorage.getItem('token') === undefined){
+          // localStorage.setItem("token", data.username);
+          // localStorage.setItem("name", data.password);
+        //redirect user or perform other actions
+        // }
+        console.log('Redirecting to welcome.html');
+        window.location.href = 'welcome.html';
+      })
+      .catch(error => {
+        alert('Authentication failed');
+        console.error('Error during login:', error);
+      });
+    });
+    function showMessage(message) {
+            alert(message);
+        }
+    
+  </script>
+</body>
+</html>
